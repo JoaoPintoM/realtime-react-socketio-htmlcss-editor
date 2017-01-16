@@ -4,7 +4,7 @@ import './App.css';
 import less from 'less';
 
 import io from 'socket.io-client'
-let socket = io(`http://localhost:3001`)
+let socket = io(`http://ec2-52-28-6-186.eu-central-1.compute.amazonaws.com:3004`)
 
 class App extends Component {
   constructor() {
@@ -66,14 +66,14 @@ h1 {
   }
 
   sendInfoHtml(html) {
-    fetch("http://localhost:3001/api/html", {
+    fetch("http://ec2-52-28-6-186.eu-central-1.compute.amazonaws.com:3004/api/html", {
       method: "POST",
       body: html
     }).then(res => console.log(res));
   }
 
   sendInfo(css) {
-    fetch("http://localhost:3001/api/compile", {
+    fetch("http://ec2-52-28-6-186.eu-central-1.compute.amazonaws.com:3004/api/compile", {
       method: "POST",
       body: css
     }).then(res => console.log(res));;

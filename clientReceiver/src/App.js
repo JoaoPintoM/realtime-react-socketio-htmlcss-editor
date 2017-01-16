@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import io from 'socket.io-client'
-let socket = io(`http://localhost:3001`)
+let socket = io(`http://ec2-52-28-6-186.eu-central-1.compute.amazonaws.com:3004`)
 
 class App extends Component {
   constructor() {
