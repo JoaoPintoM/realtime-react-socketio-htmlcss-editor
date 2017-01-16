@@ -3,6 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import less from 'less';
 
+import brace from 'brace';
+import AceEditor from 'react-ace';
+
+import 'brace/mode/css';
+import 'brace/theme/github';
+
 import io from 'socket.io-client'
 let socket = io(`http://ec2-52-28-6-186.eu-central-1.compute.amazonaws.com:3004`)
 
@@ -23,15 +29,16 @@ class App extends Component {
     this.state = {
       inputCSS: `
 body {
-    background-color: linen;
+    background-color: blue;
+    color: white;
 }
 
 h1 {
-    color: maroon;
-    margin-left: 40px;
+    margin-top: 40px;
+    color: white;
 } `,
       inputHTML: `<div>
-        you can start here
+  Hello World
 </div>`,
       outputCSS: ''
     };
@@ -46,6 +53,16 @@ h1 {
      this.sendInfoHtml(event.target.value);
   }
 
+  onChange (newValue) {
+    console.log(newValue)
+    this.tryToCompile(newValue);
+  }
+
+  onChangeHTML (value) {
+    this.sendInfoHtml(value);
+  }
+
+
   handleKeyPress = (event) => {
     if(event.key == 'Enter'){
       this.tryToCompile(event.target.value);
@@ -53,14 +70,17 @@ h1 {
   }
 
   tryToCompile(css) {
+    console.log('try to compile')
+    console.log(css)
     try {
       less.render(css, (e, output) => {
-        this.setState({
-          outputCSS: output.css
-        });
+        // this.setState({
+        //   outputCSS: output.css
+        // });
         this.sendInfo(output.css);
       });
     } catch (e) {
+      console.log(e)
       console.log('less isnt valid');
     }
   }
@@ -86,19 +106,37 @@ h1 {
     };
     return (
       <div className="App">
-        <textarea style={jStyle}
-            onBlur={this.onBlur.bind(this)}
-            onKeyPress={this.handleKeyPress}
-        >
-        {this.state.inputCSS}
-        </textarea>
 
-        <textarea style={jStyle}
-            onBlur={this.onBlurHtml.bind(this)}
-            onKeyPress={this.handleKeyPressHtml}
-        >
-        {this.state.inputHTML}
-        </textarea>
+        <AceEditor
+        height="300px"
+        width="800px"
+         mode="css"
+         theme="github"
+         onChange={this.onChange.bind(this)}
+         name="CSSDIV"
+         defaultValue={this.state.inputCSS}
+         editorProps={{$blockScrolling: true}}
+        />
+
+      <br />
+      <br />
+      {' '} {' ---------- '}{' '}
+      {' '}
+      <br />
+      <br /><br />
+
+
+        <AceEditor
+          height="300px"
+          width="800px"
+         mode="html"
+         theme="github"
+         onChange={this.onChangeHTML.bind(this)}
+         name="HTMLDIV"
+         defaultValue={this.state.inputHTML}
+         editorProps={{$blockScrolling: true}}
+        />
+
 
         <pre>{this.state.outputCSS}</pre>
       </div>
