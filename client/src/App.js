@@ -36,10 +36,29 @@ body {
 h1 {
     margin-top: 40px;
     color: white;
-} `,
-      inputHTML: `<div>
-  Hello World
-</div>`,
+}
+
+body > div
+{
+  width:100px;
+  height:100px;
+  background:#676470;
+  transition:all 0.3s ease;
+  margin:auto;
+  margin-top: 50px;
+  padding-top: 60px;
+}
+`,
+      inputHTML: `
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div> Simple as fuck </div>
+</body>
+</html>
+`,
       outputCSS: ''
     };
   }
@@ -104,12 +123,19 @@ h1 {
       width: '100%',
       height: '200px'
     };
+
+    const leftStyle = {
+      float: 'left',
+      width: '50%'
+    }
+
     return (
       <div className="App">
 
+    <div className="left" style={leftStyle}>
         <AceEditor
-        height="300px"
-        width="800px"
+        height="800px"
+        width="100%"
          mode="css"
          theme="github"
          onChange={this.onChange.bind(this)}
@@ -117,26 +143,20 @@ h1 {
          defaultValue={this.state.inputCSS}
          editorProps={{$blockScrolling: true}}
         />
+    </div>
 
-      <br />
-      <br />
-      {' '} {' ---------- '}{' '}
-      {' '}
-      <br />
-      <br /><br />
-
-
-        <AceEditor
-          height="300px"
-          width="800px"
-         mode="html"
-         theme="github"
-         onChange={this.onChangeHTML.bind(this)}
-         name="HTMLDIV"
-         defaultValue={this.state.inputHTML}
-         editorProps={{$blockScrolling: true}}
-        />
-
+    <div className="right">
+      <AceEditor
+        height="800px"
+        width="50%"
+       mode="html"
+       theme="github"
+       onChange={this.onChangeHTML.bind(this)}
+       name="HTMLDIV"
+       defaultValue={this.state.inputHTML}
+       editorProps={{$blockScrolling: true}}
+      />
+    </div>
 
         <pre>{this.state.outputCSS}</pre>
       </div>
